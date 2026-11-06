@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111018">
+  <meta name="description" content="Meetday helps adults discover compatible people and build genuine, respectful connections.">
+  <title>Meetday — Make room for a real connection</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111018;
+      --panel: #1a1822;
+      --panel-soft: #211e2a;
+      --line: rgba(255,255,255,.09);
+      --text: #f7f3f5;
+      --muted: #aaa1ad;
+      --dim: #77707c;
+      --pink: #ff6d9d;
+      --pink-soft: rgba(255,109,157,.12);
+      --mint: #83e3c2;
+      --sans: "Segoe UI", "Inter", system-ui, sans-serif;
+      --display: "Segoe UI", "Inter", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 87% 2%, rgba(255,109,157,.16), transparent 34rem),
+        radial-gradient(ellipse at 3% 55%, rgba(131,227,194,.08), transparent 30rem),
+        radial-gradient(ellipse at 52% 100%, rgba(110,88,174,.08), transparent 42rem),
+        var(--bg);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-decoration: none; }
+    button { color: inherit; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--pink);
+      outline-offset: 3px;
+    }
+    .shell { width: min(1190px, calc(100% - 48px)); margin: 0 auto; }
+    .topbar { position: sticky; z-index: 5; top: 0; height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 25px; border-bottom: 1px solid var(--line); background: rgba(17,16,24,.82); backdrop-filter: blur(18px); }
+    .brand { display: inline-flex; align-items: center; gap: 11px; }
+    .brand-mark { width: 37px; height: 37px; display: grid; place-items: center; border: 1px solid rgba(255,109,157,.4); border-radius: 13px; color: var(--pink); background: var(--pink-soft); font-size: 19px; transform: rotate(-6deg); }
+    .brand-word { display: grid; gap: 2px; }
+    .brand-word strong { font-size: 16px; font-weight: 800; letter-spacing: -.04em; }
+    .brand-word small { color: var(--dim); font-size: 9px; letter-spacing: .12em; }
+    .nav { display: flex; align-items: center; gap: 30px; margin-left: auto; }
+    .nav a { color: var(--muted); font-size: 12px; }
+    .nav a:hover, .nav a.active { color: var(--text); }
+    .nav a.active { color: var(--pink); }
+    .top-actions { display: flex; align-items: center; gap: 9px; }
+    .top-actions [hidden], .filters [hidden] { display: none; }
+    .top-actions .primary-button { min-height: 39px; }
+    .outline-button, .primary-button, .icon-button, .soft-button {
+      min-height: 39px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer;
+      font-size: 11px; font-weight: 700; transition: .18s ease;
+    }
+    .outline-button, .soft-button { color: var(--text); background: rgba(255,255,255,.035); }
+    .outline-button:hover, .soft-button:hover { border-color: rgba(255,109,157,.5); background: var(--pink-soft); }
+    .primary-button { border-color: transparent; color: #28121b; background: var(--pink); box-shadow: 0 8px 24px rgba(255,109,157,.16); }
+    .primary-button:hover { transform: translateY(-1px); background: #ff8aaf; }
+    .icon-button { width: 39px; padding: 0; color: var(--muted); background: rgba(255,255,255,.035); font-size: 17px; }
+    .safety-note { display: flex; align-items: center; gap: 10px; margin: 18px 0 0; padding: 10px 13px; border: 1px solid rgba(131,227,194,.18); border-radius: 10px; color: #b8dacf; background: rgba(131,227,194,.055); font-size: 10px; line-height: 1.5; }
+    .safety-note b { color: var(--mint); }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 32px; align-items: center; padding: 52px 0 38px; }
+    .eyebrow { margin: 0 0 12px; color: var(--pink); font-size: 9px; font-weight: 800; letter-spacing: .16em; }
+    h1, h2, h3, p { margin-top: 0; }
+    .hero h1 { max-width: 670px; margin-bottom: 16px; font-size: clamp(40px, 6vw, 68px); font-weight: 800; line-height: .99; letter-spacing: -.065em; }
+    .hero h1 span { color: var(--pink); }
+    .hero-copy { max-width: 500px; margin-bottom: 21px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 9px; }
+    .hero-visual { position: relative; min-height: 254px; overflow: hidden; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 22px; background: radial-gradient(ellipse at 50% 40%, rgba(255,109,157,.24), transparent 60%), radial-gradient(ellipse at 30% 100%, rgba(131,227,194,.12), transparent 52%), linear-gradient(140deg, #28202c, #191722 70%); box-shadow: 0 25px 80px rgba(0,0,0,.2); }
+    .orbit { position: absolute; width: 225px; height: 225px; border: 1px solid rgba(255,255,255,.1); border-radius: 50%; }
+    .orbit::before, .orbit::after { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 20px var(--pink); content: ""; }
+    .orbit::before { top: 21px; left: 36px; }
+    .orbit::after { right: 12px; bottom: 56px; width: 6px; height: 6px; background: var(--mint); box-shadow: 0 0 18px var(--mint); }
+    .orbit-two { width: 160px; height: 160px; border-color: rgba(255,109,157,.16); }
+    .heart-mark { z-index: 1; display: grid; width: 108px; height: 108px; place-items: center; border: 1px solid rgba(255,109,157,.28); border-radius: 34px; color: var(--pink); background: rgba(255,109,157,.1); box-shadow: 0 20px 70px rgba(255,109,157,.16); font-size: 47px; transform: rotate(-8deg); }
+    .visual-caption { position: absolute; right: 18px; bottom: 15px; left: 18px; color: var(--muted); font-size: 9px; text-align: center; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 15px; margin: 18px 0 13px; }
+    .section-heading h2 { margin: 0; font-size: 23px; letter-spacing: -.045em; }
+    .section-subtitle { margin: 5px 0 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 14px; }
+    .filters input, .filters select { min-height: 37px; padding: 0 11px; border: 1px solid var(--line); border-radius: 9px; color: var(--text); background: var(--panel); font-size: 10px; }
+    .filters input { width: min(250px, 100%); }
+    .filters select { min-width: 145px; }
+    .profiles { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 13px; }
+    .profile-card { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 15px; background: linear-gradient(155deg, rgba(33,30,42,.96), rgba(24,22,32,.98)); box-shadow: 0 9px 28px rgba(0,0,0,.12); transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+    .profile-card:hover { transform: translateY(-4px); border-color: rgba(255,109,157,.45); box-shadow: 0 18px 38px rgba(0,0,0,.22); }
+    .portrait { position: relative; height: 180px; display: grid; place-items: center; overflow: hidden; }
+    .portrait::before, .portrait::after { position: absolute; border-radius: 50%; content: ""; }
+    .portrait::before { width: 180px; height: 180px; top: -50px; right: -25px; background: rgba(255,255,255,.08); }
+    .portrait::after { width: 120px; height: 120px; bottom: -60px; left: -20px; background: rgba(255,255,255,.07); }
+    .portrait-one { background: linear-gradient(145deg,#8a4c65,#37253c); }
+    .portrait-two { background: linear-gradient(145deg,#426f69,#202d3b); }
+    .portrait-three { background: linear-gradient(145deg,#aa7053,#4a3041); }
+    .portrait-four { background: linear-gradient(145deg,#706099,#29283d); }
+    .portrait-five { background: linear-gradient(145deg,#54809b,#263648); }
+    .portrait-six { background: linear-gradient(145deg,#9a596e,#402b42); }
+    .portrait-seven { background: linear-gradient(145deg,#547568,#293646); }
+    .portrait-eight { background: linear-gradient(145deg,#9b7750,#403344); }
+    .avatar-art { z-index: 1; width: 104px; height: 104px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.28); border-radius: 50%; color: rgba(255,255,255,.95); background: rgba(17,16,24,.24); box-shadow: inset 0 0 30px rgba(255,255,255,.1); font-size: 33px; font-weight: 800; letter-spacing: -.07em; backdrop-filter: blur(7px); }
+    .sample-tag { position: absolute; z-index: 2; top: 10px; left: 10px; padding: 5px 7px; border: 1px solid rgba(255,255,255,.17); border-radius: 99px; color: #fff; background: rgba(17,16,24,.48); font-size: 8px; font-weight: 700; backdrop-filter: blur(8px); }
+    .profile-content { padding: 13px; }
+    .profile-title { display: flex; align-items: baseline; justify-content: space-between; gap: 7px; }
+    .profile-title h3 { overflow: hidden; margin: 0; font-size: 15px; letter-spacing: -.025em; text-overflow: ellipsis; white-space: nowrap; }
+    .profile-title span { flex: 0 0 auto; color: var(--muted); font-size: 10px; }
+    .profile-location { margin: 5px 0 9px; color: var(--muted); font-size: 9px; }
+    .profile-bio { min-height: 42px; margin: 0 0 10px; color: #d3ccd4; font-size: 10px; line-height: 1.55; }
+    .profile-username { margin: -5px 0 8px; color: var(--pink); font-size: 9px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; min-height: 23px; margin-bottom: 11px; }
+    .tag { padding: 4px 7px; border: 1px solid var(--line); border-radius: 99px; color: #c9c1cb; background: rgba(255,255,255,.025); font-size: 8px; }
+    .profile-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .profile-actions button { min-height: 34px; padding: 0 8px; border-radius: 8px; font-size: 9px; }
+    .profile-actions .like-button { border: 1px solid rgba(255,109,157,.25); color: var(--pink); background: var(--pink-soft); }
+    .profile-actions .like-button[aria-pressed="true"] { color: #25121a; background: var(--pink); }
+    .profile-actions .pass-button { border: 1px solid var(--line); color: var(--muted); background: rgba(255,255,255,.025); }
+    .empty { grid-column: 1/-1; padding: 36px 15px; border: 1px dashed var(--line); border-radius: 13px; color: var(--muted); font-size: 11px; text-align: center; }
+    .bottom-grid { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(260px,.7fr); gap: 13px; margin: 27px 0 38px; }
+    .panel { padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: rgba(26,24,34,.86); }
+    .panel h2 { margin: 0 0 6px; font-size: 16px; letter-spacing: -.03em; }
+    .panel-copy { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.65; }
+    .account-panel { margin: 22px 0; }
+    .account-header { display: flex; align-items: center; gap: 16px; }
+    .account-avatar { width: 82px; height: 82px; display: grid; flex: 0 0 82px; place-items: center; overflow: hidden; border: 1px solid rgba(255,109,157,.35); border-radius: 50%; color: var(--pink); background: var(--pink-soft); font-size: 30px; font-weight: 800; }
+    .account-avatar img, .mini-avatar img, .avatar-photo { width: 100%; height: 100%; object-fit: cover; }
+    .account-details { min-width: 0; }
+    .account-details h2 { margin: 0 0 4px; font-size: 22px; letter-spacing: -.04em; }
+    .account-username { margin: 0 0 7px; color: var(--pink); font-size: 11px; }
+    .account-email { margin: 0; color: var(--dim); font-size: 9px; overflow-wrap: anywhere; }
+    .account-bio { margin: 16px 0 12px; color: #d3ccd4; font-size: 11px; line-height: 1.65; white-space: pre-wrap; }
+    .account-facts { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 12px; }
+    .account-facts span { padding: 6px 9px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); font-size: 9px; }
+    .account-interests { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+    .matches-list { display: grid; gap: 8px; margin-top: 13px; }
+    .match-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.025); }
+    .match-person { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .mini-avatar { width: 34px; height: 34px; display: grid; flex: 0 0 34px; place-items: center; border-radius: 50%; color: #fff; background: linear-gradient(140deg,#a95d80,#514067); font-size: 10px; font-weight: 800; }
+    .match-person strong { display: block; font-size: 10px; }
+    .match-person small { display: block; margin-top: 3px; color: var(--muted); font-size: 8px; }
+    .match-row .soft-button { min-height: 30px; padding: 0 9px; font-size: 9px; }
+    .match-row-actions { display: flex; flex: 0 0 auto; gap: 6px; }
+    .match-row-actions button { min-height: 30px; padding: 0 9px; font-size: 9px; }
+    .date-plan-list { display: grid; gap: 8px; margin-top: 12px; }
+    .date-plan { padding: 11px; border: 1px solid rgba(255,109,157,.18); border-radius: 10px; background: rgba(255,109,157,.045); }
+    .date-plan strong { display: block; margin-bottom: 5px; font-size: 10px; }
+    .date-plan span { display: block; color: var(--muted); font-size: 9px; line-height: 1.5; }
+    .date-plan-actions { display: flex; justify-content: flex-end; margin-top: 7px; }
+    .date-plan-actions button { min-height: 26px; padding: 0 8px; border: 1px solid var(--line); border-radius: 7px; color: var(--muted); background: transparent; cursor: pointer; font-size: 8px; }
+    .safety-list { display: grid; gap: 11px; margin: 13px 0 0; padding: 0; list-style: none; }
+    .safety-list li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; color: var(--muted); font-size: 9px; line-height: 1.55; }
+    .safety-list b { color: var(--mint); }
+    .footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 17px 0 26px; border-top: 1px solid var(--line); color: var(--dim); font-size: 9px; }
+    .footer a { color: var(--muted); }
+    .toast { position: fixed; z-index: 10; right: 20px; bottom: 20px; max-width: min(380px,calc(100% - 40px)); padding: 13px 16px; border: 1px solid rgba(255,109,157,.3); border-radius: 12px; color: var(--text); background: #211d28; box-shadow: 0 15px 40px rgba(0,0,0,.4); font-size: 11px; line-height: 1.5; }
+    .toast[hidden] { display: none; }
+    .live-account-status { color: var(--muted); font-size: 9px; }
+    .live-setup-note, .live-auth-gate { margin: 20px 0; padding: 17px; border: 1px solid rgba(131,227,194,.2); border-radius: 14px; background: rgba(131,227,194,.05); }
+    .live-setup-note { display: grid; gap: 5px; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .live-setup-note strong { color: var(--mint); }
+    .live-setup-note code { color: var(--text); }
+    .project-key-form { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 7px; }
+    .project-key-form input { min-width: min(100%,300px); min-height: 39px; flex: 1; padding: 0 11px; border: 1px solid var(--line); border-radius: 9px; color: var(--text); background: var(--panel); font-size: 10px; }
+    .project-key-form .primary-button { min-height: 39px; }
+    .setup-help-link { width: fit-content; color: var(--mint); font-size: 9px; text-decoration: underline; text-underline-offset: 3px; }
+    .live-auth-gate { padding: clamp(24px,6vw,58px); text-align: center; }
+    .live-auth-gate h1 { margin: 0 0 13px; font-size: clamp(34px,6vw,56px); letter-spacing: -.06em; }
+    .live-auth-gate h1 span { color: var(--pink); }
+    .live-auth-gate > p:not(.eyebrow) { margin: 0 auto 20px; color: var(--muted); font-size: 12px; }
+    .live-auth-gate[hidden], .live-setup-note[hidden] { display: none; }
+    .auth-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .auth-perks { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin: 0 0 16px; }
+    .auth-perks span { padding: 9px 7px; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: rgba(255,255,255,.025); font-size: 8px; line-height: 1.5; text-align: center; }
+    .auth-perks b { display: block; margin-bottom: 2px; color: var(--mint); font-size: 9px; }
+    .auth-dialog { --auth-green: #65dda4; --auth-blue: #79b9f4; --auth-gold: #e8c878; width: min(900px,calc(100% - 28px)); max-height: min(88vh,720px); overflow: hidden; border-color: rgba(121,185,244,.24); background: #111720; }
+    .auth-dialog[open] { display: grid; grid-template-columns: minmax(250px,.88fr) minmax(0,1.12fr); }
+    .auth-showcase { position: relative; min-height: 100%; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; padding: 34px 30px; border-right: 1px solid rgba(255,255,255,.09); background: radial-gradient(ellipse at 8% 8%,rgba(101,221,164,.22),transparent 58%),radial-gradient(ellipse at 95% 95%,rgba(69,140,211,.23),transparent 52%),linear-gradient(145deg,#172a28 0%,#15222b 57%,#111923 100%); }
+    .auth-showcase::before,.auth-showcase::after { position:absolute; width:240px; height:240px; border:1px solid rgba(121,185,244,.16); border-radius:50%; content:""; pointer-events:none; }
+    .auth-showcase::before { right:-120px; top:22%; box-shadow:0 0 0 28px rgba(121,185,244,.035),0 0 0 58px rgba(232,200,120,.025); }
+    .auth-showcase::after { width:95px; height:95px; right:40px; top:37%; border-color:rgba(232,200,120,.3); background:radial-gradient(circle,rgba(232,200,120,.18),transparent 70%); }
+    .auth-brand { z-index:1; display:flex; align-items:center; gap:10px; font-size:14px; font-weight:800; letter-spacing:-.04em; }
+    .auth-brand-mark { width:34px; height:34px; display:grid; place-items:center; border:1px solid rgba(101,221,164,.35); border-radius:12px; color:var(--auth-green); background:linear-gradient(145deg,rgba(101,221,164,.12),rgba(121,185,244,.1)); font-size:18px; }
+    .auth-showcase-copy { z-index:1; margin:60px 0 auto; padding:46px 0; }
+    .auth-showcase-kicker { margin:0 0 12px; color:var(--auth-gold); font-size:9px; font-weight:800; letter-spacing:.16em; }
+    .auth-showcase h3 { max-width:320px; margin:0 0 12px; font-size:clamp(28px,4vw,43px); line-height:1.04; letter-spacing:-.06em; }
+    .auth-showcase h3 span { color:var(--auth-green); }
+    .auth-showcase-copy > p:last-child { max-width:310px; margin:0; color:#bdcbd7; font-size:11px; line-height:1.75; }
+    .auth-promises { z-index:1; display:grid; gap:10px; margin:0; padding:0; list-style:none; }
+    .auth-promises li { display:flex; align-items:center; gap:9px; color:#cfdbd1; font-size:9px; }
+    .auth-promises li span { width:20px; height:20px; display:grid; flex:0 0 20px; place-items:center; border:1px solid rgba(101,221,164,.24); border-radius:50%; color:var(--auth-green); background:linear-gradient(145deg,rgba(101,221,164,.1),rgba(121,185,244,.08)); }
+    .auth-form-content { min-width:0; padding:32px clamp(22px,5vw,46px); }
+    .auth-form-content .dialog-heading { align-items:flex-start; margin-bottom:22px; }
+    .auth-form-content .eyebrow { color:var(--auth-blue); }
+    .auth-form-content .dialog-heading h2 { font-size:25px; letter-spacing:-.05em; }
+    .auth-form-content .dialog-heading p { max-width:390px; font-size:10px; line-height:1.7; }
+    .auth-form-content .close-dialog { flex:0 0 31px; }
+    .auth-form-content .form-grid { gap:14px; }
+    .auth-form-content .field { gap:7px; color:#d5e0d7; font-size:10px; font-weight:650; }
+    .auth-form-content .field input { min-height:45px; padding:10px 12px; border-color:rgba(121,185,244,.16); border-radius:10px; background:#0e151d; font-size:12px; }
+    .auth-form-content .field input:focus { border-color:rgba(121,185,244,.7); outline:3px solid rgba(121,185,244,.11); }
+    .password-control { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; }
+    .password-control input { min-width:0; }
+    .password-toggle { padding:0 10px; border:1px solid rgba(121,185,244,.22); border-radius:9px; color:#cde0f1; background:linear-gradient(145deg,rgba(101,221,164,.055),rgba(121,185,244,.07)); cursor:pointer; font-size:9px; font-weight:700; }
+    .password-toggle:hover { border-color:rgba(121,185,244,.5); background:rgba(121,185,244,.1); }
+    .password-strength { display:grid; gap:6px; margin-top:1px; }
+    .password-strength-track { height:4px; overflow:hidden; border-radius:99px; background:rgba(255,255,255,.08); }
+    .password-strength-track span { display:block; width:0; height:100%; border-radius:inherit; background:#ef7f8e; transition:width .18s ease,background .18s ease; }
+    .password-strength[data-strength="2"] .password-strength-track span { background:var(--auth-gold,#e8c878); }
+    .password-strength[data-strength="3"] .password-strength-track span { background:#88c7a2; }
+    .password-strength[data-strength="4"] .password-strength-track span { background:#65dda4; }
+    .password-strength-copy { color:#98a79b; font-size:8px; }
+    .password-strength[data-mode="sign-in"] { display:none; }
+    .auth-form-content .field-help { font-size:9px; }
+    .auth-form-content .auth-actions { display:grid; grid-template-columns:1fr auto; margin:18px 0 14px; }
+    .auth-reset-button { display:block; margin:0 0 15px auto; padding:3px 0; border:0; color:#88bef0; background:transparent; cursor:pointer; font-size:9px; text-decoration:underline; text-underline-offset:3px; }
+    .auth-reset-button:hover { color:#b5d8fa; }
+    .auth-form-content .primary-button { min-height:44px; padding:0 20px; color:#112018; background:linear-gradient(115deg,#83e6b4 0%,#58c99a 57%,#74c5e8 100%); box-shadow:0 10px 26px rgba(76,201,135,.16); font-size:11px; }
+    .auth-form-content .primary-button:hover { background:linear-gradient(115deg,#a0f1c8 0%,#76d8ad 57%,#91d5f0 100%); }
+    .auth-form-content .outline-button { min-height:44px; border-color:rgba(121,185,244,.25); color:#d5e5f3; background:linear-gradient(125deg,rgba(101,221,164,.055),rgba(121,185,244,.075)); }
+    .auth-form-content .outline-button:hover,.auth-form-content .close-dialog:hover { border-color:rgba(232,200,120,.5); background:linear-gradient(125deg,rgba(101,221,164,.1),rgba(121,185,244,.12)); }
+    .auth-form-content .auth-perks { grid-template-columns:repeat(3,minmax(0,1fr)); margin:0; gap:6px; }
+    .auth-form-content .auth-perks span { border-color:rgba(255,255,255,.075); background:rgba(255,255,255,.018); font-size:8px; }
+    .auth-form-content .auth-perks b { color:var(--auth-gold); font-size:8px; }
+    .auth-form-content .form-error { min-height:18px; margin-top:12px; font-size:10px; }
+    .auth-dialog .close-dialog { color:#b5c5b8; }
+    .auth-dialog .field input:focus-visible { outline-color:var(--auth-blue); }
+    .live-auth-gate .eyebrow { color:var(--mint); }
+    .live-auth-gate h1 span { color:var(--mint); }
+    .chat-dialog-content { display: grid; grid-template-rows: auto minmax(180px,45vh) auto auto; }
+    .chat-messages { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; margin: 0 0 12px; padding: 0; list-style: none; }
+    .chat-message { max-width: 82%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 12px; color: var(--text); background: var(--panel-soft); font-size: 10px; line-height: 1.55; overflow-wrap: anywhere; white-space: pre-wrap; }
+    .chat-message.mine { align-self: flex-end; border-color: rgba(255,109,157,.22); background: var(--pink-soft); }
+    .chat-message time { display: block; margin-top: 4px; color: var(--dim); font-size: 8px; }
+    .chat-compose { display: flex; align-items: end; gap: 8px; }
+    .chat-compose textarea { flex: 1; min-height: 42px; max-height: 130px; resize: vertical; padding: 10px; border: 1px solid var(--line); border-radius: 9px; color: var(--text); background: #111018; font: inherit; font-size: 10px; }
+    .chat-compose button { flex: 0 0 auto; }
+    .match-row-actions { flex-wrap: wrap; justify-content: flex-end; }
+    .match-row-actions .danger-button, .profile-actions .danger-button { color: #ff9aaf; border-color: rgba(255,154,175,.22); background: rgba(255,154,175,.05); }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    dialog { width: min(510px,calc(100% - 28px)); max-height: min(88vh,780px); padding: 0; overflow: auto; border: 1px solid rgba(255,255,255,.12); border-radius: 18px; color: var(--text); background: radial-gradient(ellipse at 100% 0, rgba(255,109,157,.11), transparent 42%), #191721; box-shadow: 0 25px 100px rgba(0,0,0,.6); }
+    dialog::backdrop { background: rgba(7,6,12,.76); backdrop-filter: blur(5px); }
+    .dialog-content { padding: 22px; }
+    .dialog-heading { display: flex; justify-content: space-between; align-items: start; gap: 12px; margin-bottom: 17px; }
+    .dialog-heading h2 { margin: 0 0 5px; font-size: 20px; letter-spacing: -.04em; }
+    .dialog-heading p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .close-dialog { width: 31px; height: 31px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: transparent; cursor: pointer; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .field { display: grid; gap: 6px; color: #d3ccd4; font-size: 9px; }
+    .field.full { grid-column: 1/-1; }
+    .field input, .field select, .field textarea { width: 100%; min-height: 39px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px; color: var(--text); background: #111018; font-size: 11px; }
+    .field textarea { min-height: 80px; resize: vertical; }
+    .field input[type="file"] { min-height: auto; padding: 10px; }
+    .field-help { margin: 0; color: var(--dim); font-size: 8px; line-height: 1.5; }
+    .consent { display: flex; align-items: start; gap: 8px; margin: 13px 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
+    .consent input { margin-top: 2px; accent-color: var(--pink); }
+    .dialog-submit { width: 100%; }
+    .form-error { min-height: 15px; margin: 7px 0 0; color: #ff9aaf; font-size: 9px; }
+    @media (max-width: 900px) { .profiles { grid-template-columns: repeat(3,minmax(0,1fr)); } .hero { grid-template-columns: minmax(0,1fr) minmax(250px,.8fr); gap: 20px; } }
+    @media (max-width: 680px) {
+      .shell { width: min(100% - 28px,560px); }
+      .topbar { height: auto; min-height: 66px; flex-wrap: wrap; gap: 10px; padding: 10px 0; }
+      .nav { order: 3; flex-basis: 100%; justify-content: center; gap: 20px; margin: 0; }
+      .nav a { font-size: 10px; }
+      .top-actions { margin-left: auto; }
+      .top-actions .outline-button, .top-actions .primary-button { min-height: 34px; padding: 0 9px; font-size: 9px; }
+      .live-account-status { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 37px 0 26px; }
+      .hero h1 { font-size: clamp(39px,12vw,56px); }
+      .hero-visual { min-height: 185px; }
+      .profiles { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
+      .portrait { height: 145px; }
+      .avatar-art { width: 82px; height: 82px; font-size: 27px; }
+      .profile-content { padding: 10px; }
+      .profile-title h3 { font-size: 13px; }
+      .profile-bio { min-height: 48px; font-size: 9px; }
+      .account-panel { padding: 14px; }
+      .account-avatar { width: 66px; height: 66px; flex-basis: 66px; }
+      .account-details h2 { font-size: 18px; }
+      .bottom-grid { grid-template-columns: 1fr; }
+      .section-heading h2 { font-size: 19px; }
+      .filters input { flex: 1 1 100%; width: 100%; }
+      .filters select { flex: 1; min-width: 0; }
+      .auth-dialog { width:min(520px,calc(100% - 22px)); max-height:90vh; overflow:auto; }
+      .auth-dialog[open] { display:block; }
+      .auth-showcase { min-height:auto; padding:20px 20px 14px; border-right:0; border-bottom:1px solid rgba(255,255,255,.08); }
+      .auth-showcase::before { width:170px; height:170px; right:-85px; top:-70px; }
+      .auth-showcase::after { display:none; }
+      .auth-brand { font-size:12px; }
+      .auth-brand-mark { width:29px; height:29px; }
+      .auth-showcase-copy { margin:0; padding:19px 0 0; }
+      .auth-showcase-kicker { margin-bottom:6px; font-size:8px; }
+      .auth-showcase h3 { max-width:400px; margin-bottom:5px; font-size:25px; }
+      .auth-showcase-copy > p:last-child { max-width:420px; font-size:9px; }
+      .auth-promises { display:none; }
+      .auth-form-content { padding:20px; }
+      .auth-form-content .dialog-heading { margin-bottom:15px; }
+      .auth-form-content .dialog-heading h2 { font-size:21px; }
+      .auth-form-content .form-grid { gap:10px; }
+      .auth-form-content .auth-actions { grid-template-columns:1fr; }
+      .auth-form-content .auth-actions .outline-button { min-height:38px; }
+    }
+    @media (max-width: 380px) { .brand-word small { display: none; } .nav { gap: 9px; } .nav a { font-size: 9px; } .top-actions .outline-button, .top-actions .primary-button { max-width: 68px; padding: 0 7px; white-space: normal; line-height: 1.15; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="Meetday home">
+        <span class="brand-mark" aria-hidden="true">♡</span>
+        <span class="brand-word"><strong>meetday</strong><small>MEET WITH INTENTION</small></span>
+      </a>
+      <nav class="nav" aria-label="Main navigation" hidden>
+        <a class="active" href="#discover">Discover</a>
+        <a href="#connections">Connections <span id="connection-count">0</span></a>
+        <a id="my-account-link" href="#my-account" hidden>My account</a>
+        <a href="#safety">Safety</a>
+      </nav>
+      <div class="top-actions">
+        <span class="live-account-status" id="live-account-status" aria-live="polite">Sign in required</span>
+        <button class="outline-button" id="auth-button" type="button">Log in</button>
+        <button class="primary-button" id="signup-button" type="button" data-open-signup>Sign up</button>
+        <button class="outline-button" id="profile-button" type="button" data-open-profile hidden>Set up profile</button>
+        <button class="soft-button" id="sign-out-button" type="button" hidden>Sign out</button>
+      </div>
+    </header>
+
+    <aside class="safety-note" id="safety-note" role="note" hidden>
+      <span aria-hidden="true">✦</span>
+      <span id="safety-note-copy"><b>18+ only.</b> Use the local demo or connect a Supabase project for real accounts. Age is self-declared; identity and age verification are not included.</span>
+    </aside>
+
+    <main id="home">
+      <section class="live-setup-note" id="live-setup-note" role="status" aria-live="polite" hidden>
+        <strong id="setup-title">Connect your Meetday project</strong>
+        <span id="setup-copy">The Supabase project URL is already saved. Add its public publishable key from Supabase → Project Settings → API Keys. Never enter a secret or service-role key here.</span>
+        <form class="project-key-form" id="project-key-form">
+          <label class="visually-hidden" for="project-publishable-key">Supabase publishable or anon key</label>
+          <input id="project-publishable-key" name="publishableKey" type="password" autocomplete="off" spellcheck="false" maxlength="512" placeholder="sb_publishable_… or legacy anon key" required>
+          <button class="primary-button" type="submit">Connect</button>
+        </form>
+        <a class="setup-help-link" href="./README.md" target="_blank" rel="noopener">View setup steps and database instructions ↗</a>
+      </section>
+      <section class="live-auth-gate" id="live-auth-gate">
+        <p class="eyebrow">YOUR NEXT CHAPTER</p>
+        <h1>Meet people with <span>intention.</span></h1>
+        <p id="live-auth-message">Sign in or create an account to see real member profiles.</p>
+        <button class="primary-button" id="live-auth-cta" type="button">Sign in or join <span aria-hidden="true">→</span></button>
+      </section>
+      <section class="panel account-panel" id="my-account" aria-labelledby="account-name" hidden>
+        <p class="eyebrow">YOUR PERSONAL PROFILE</p>
+        <div class="account-header">
+          <div class="account-avatar" id="account-avatar" aria-hidden="true">M</div>
+          <div class="account-details">
+            <h2 id="account-name"></h2>
+            <p class="account-username" id="account-username"></p>
+            <p class="account-email" id="account-email"></p>
+          </div>
+          <button class="outline-button" id="edit-account-button" type="button">Edit profile</button>
+        </div>
+        <p class="account-bio" id="account-bio"></p>
+        <div class="account-facts" id="account-facts"></div>
+        <div class="account-interests" id="account-interests"></div>
+        <p class="field-help">Your email is private. Your name, username, age, city, interests, and bio are shown to signed-in members.</p>
+      </section>
+      <section class="hero" hidden>
+        <div>
+          <p class="eyebrow">LESS SWIPING, MORE MEANING</p>
+          <h1>Make room for<br><span>a real connection.</span></h1>
+          <p class="hero-copy">Meet people who share your pace, your interests, and your idea of a good first date. Start with a conversation; let the rest unfold naturally.</p>
+          <div class="hero-cta">
+            <a class="primary-button" href="#discover">Explore people <span aria-hidden="true">→</span></a>
+            <button class="outline-button" type="button" data-open-signup>Create a free account</button>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <span class="orbit"></span><span class="orbit orbit-two"></span><span class="heart-mark">♡</span>
+          <span class="visual-caption">Curiosity first. Connection at your own pace.</span>
+        </div>
+      </section>
+
+      <section id="discover" aria-labelledby="discover-heading" hidden>
+        <div class="section-heading">
+          <div><p class="eyebrow">A GOOD PLACE TO BEGIN</p><h2 id="discover-heading">People you might like</h2><p class="section-subtitle">A small demo directory to explore what your future dating app could feel like.</p></div>
+          <span class="section-subtitle" id="results-count">8 sample profiles</span>
+        </div>
+        <div class="filters" aria-label="Filter profiles">
+          <input id="profile-search" type="search" maxlength="80" placeholder="Search interests or city" aria-label="Search people by interest or city">
+          <select id="distance-filter" aria-label="Preferred distance"><option value="any">Any distance</option><option value="10">Within 10 miles</option><option value="25">Within 25 miles</option><option value="50">Within 50 miles</option></select>
+          <select id="intent-filter" aria-label="Relationship intention"><option value="any">All intentions</option><option value="relationship">Long-term</option><option value="friends">New friends</option><option value="exploring">Open to seeing</option></select>
+          <button class="soft-button" id="show-passed-button" type="button" aria-pressed="false" hidden>Show passed</button>
+        </div>
+        <div class="profiles" id="profiles" aria-live="polite"></div>
+      </section>
+
+      <section class="bottom-grid" hidden>
+        <div class="panel" id="connections">
+          <p class="eyebrow">YOUR SPACE</p>
+          <h2 id="connections-heading">Connections</h2>
+          <p class="panel-copy" id="connections-copy">People you’ve shown interest in appear here on this device. A real mutual match and messaging need a secure service and the other person’s consent.</p>
+          <div class="matches-list" id="connections-list"><p class="panel-copy" id="connections-empty">No connections yet. Explore the sample profiles above.</p></div>
+        </div>
+        <aside class="panel" id="safety">
+          <p class="eyebrow">CARE COMES FIRST</p>
+          <h2>Meet thoughtfully</h2>
+          <ul class="safety-list">
+            <li><b>01</b><span>Keep personal contact details private until you feel comfortable.</span></li>
+            <li><b>02</b><span>For a first meet, choose a public place and tell someone you trust.</span></li>
+            <li><b>03</b><span>Respect boundaries. A yes to a conversation is not a yes to anything else.</span></li>
+            <li><b>04</b><span>Block or report behavior that feels unsafe. Trust your instincts.</span></li>
+          </ul>
+        </aside>
+      </section>
+    </main>
+    <footer class="footer" hidden><span>Meetday · adults 18+ · age is self-declared</span><span id="footer-data-mode">Local demo only · no real accounts or messages</span><a href="../cricfy.html">Back to DanTv</a></footer>
+  </div>
+
+  <dialog id="profile-dialog" aria-labelledby="profile-dialog-title">
+    <form class="dialog-content" id="profile-form">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">YOUR INTRODUCTION</p><h2 id="profile-dialog-title">Create your profile</h2><p id="profile-dialog-copy">This prototype saves a draft only in this browser. Never share private contact details here.</p></div>
+        <button class="close-dialog" type="button" data-close-profile aria-label="Close">×</button>
+      </div>
+      <div class="form-grid">
+        <label class="field">Display name<input name="name" autocomplete="given-name" maxlength="30" required placeholder="What should people call you?"></label>
+        <label class="field">Username<input name="username" autocomplete="username" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" required placeholder="your_name"><p class="field-help">Unique public name: letters, numbers, and underscores only.</p></label>
+        <label class="field">Age<input name="age" type="number" inputmode="numeric" min="18" max="120" required placeholder="18+"></label>
+        <label class="field">City<input name="city" maxlength="50" autocomplete="address-level2" required placeholder="Your city"></label>
+        <label class="field">Looking for<select name="intent" required><option value="">Choose one</option><option value="relationship">A long-term relationship</option><option value="friends">New friends</option><option value="exploring">Open to seeing</option></select></label>
+        <label class="field full">Profile photo<input name="avatar" type="file" accept="image/jpeg,image/png,image/webp"><p class="field-help" id="avatar-help">Optional. Choose a JPG, PNG, or WebP image up to 3 MB. It will only be visible to signed-in members.</p></label>
+        <label class="field full">Interests<input name="interests" maxlength="240" placeholder="Hiking, books, cooking"><p class="field-help">Add up to eight, separated by commas. Keep personal contact details private.</p></label>
+        <label class="field full">A little about you<textarea name="bio" maxlength="240" required placeholder="Your favorite way to spend a free afternoon…"></textarea><p class="field-help">Keep it friendly. Don’t include phone numbers, addresses, or other sensitive information.</p></label>
+      </div>
+      <label class="consent"><input name="adult" type="checkbox" required><span id="profile-consent-copy">I confirm I’m at least 18. I understand my dating profile is visible to signed-in members and my email stays private.</span></label>
+      <button class="primary-button dialog-submit" id="profile-submit" type="submit">Create my profile</button>
+      <p class="form-error" id="profile-error" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+  <dialog id="date-dialog" aria-labelledby="date-dialog-title">
+    <form class="dialog-content" id="date-form">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">KEEP IT COMFORTABLE</p><h2 id="date-dialog-title">Plan a first meet</h2><p>Make a simple plan with someone you’re interested in. This demo stores it only in this browser.</p></div>
+        <button class="close-dialog" type="button" data-close-date aria-label="Close">×</button>
+      </div>
+      <div class="form-grid">
+        <label class="field full">Who are you meeting?<select name="person" id="date-person" required></select></label>
+        <label class="field">Date<input name="date" id="date-date" type="date" required></label>
+        <label class="field">Time<input name="time" type="time" required></label>
+        <label class="field full">Public place name or general area<input name="place" maxlength="80" required placeholder="A busy cafe in the city center"><p class="field-help">Don’t enter a home address, phone number, or private details.</p></label>
+        <label class="field full">Low-pressure activity<select name="activity" required><option value="">Choose an idea</option><option>Coffee or tea</option><option>Walk in a busy public park</option><option>Lunch at a public restaurant</option><option>Visit a public museum or gallery</option><option>Other public activity</option></select></label>
+      </div>
+      <label class="consent"><input name="safety" type="checkbox" required><span>I’ll meet in a public place, arrange my own transport, and let someone I trust know my plans.</span></label>
+      <button class="primary-button dialog-submit" type="submit">Save date plan</button>
+      <p class="form-error" id="date-error" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+  <dialog class="auth-dialog" id="auth-dialog" aria-labelledby="auth-dialog-title">
+    <aside class="auth-showcase" aria-label="Meetday community">
+      <div class="auth-brand"><span class="auth-brand-mark" aria-hidden="true">♡</span><span>meetday</span></div>
+      <div class="auth-showcase-copy">
+        <p class="auth-showcase-kicker">A MORE PERSONAL WAY TO MEET</p>
+        <h3>Good connections<br>start <span>with you.</span></h3>
+        <p>Create your personal space, meet people at your pace, and keep your details in your control.</p>
+      </div>
+      <ul class="auth-promises">
+        <li><span aria-hidden="true">✓</span> Your email stays private</li>
+        <li><span aria-hidden="true">✓</span> Only verified accounts can join</li>
+        <li><span aria-hidden="true">✓</span> You choose what goes on your profile</li>
+      </ul>
+    </aside>
+    <form class="dialog-content auth-form-content" id="auth-form">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">YOUR ACCOUNT</p><h2 id="auth-dialog-title">Sign in or join</h2><p id="auth-dialog-copy">Use your email to create an account or sign in. Verify your email before your profile is discoverable.</p></div>
+        <button class="close-dialog" type="button" data-close-auth aria-label="Close">×</button>
+      </div>
+      <div class="form-grid">
+        <label class="field full">Email address<input name="email" type="email" autocomplete="email" maxlength="254" required placeholder="you@example.com"></label>
+        <label class="field full">Password
+          <span class="password-control"><input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="1" maxlength="128" required placeholder="Enter your password"><button class="password-toggle" id="password-toggle" type="button" aria-controls="auth-password" aria-pressed="false">Show</button></span>
+          <span class="password-strength" id="password-strength" data-strength="0" data-mode="sign-in"><span class="password-strength-track"><span></span></span><span class="password-strength-copy" id="password-strength-copy">Password strength appears when creating an account.</span></span>
+          <span class="field-help" id="password-help">Use the password you chose for your Meetday account.</span>
+        </label>
+      </div>
+      <div class="auth-actions">
+        <button class="primary-button" id="auth-submit" type="submit">Sign in</button>
+        <button class="outline-button" id="auth-mode-toggle" type="button">Create account</button>
+      </div>
+      <button class="auth-reset-button" id="password-reset-button" type="button">Forgot password?</button>
+      <div class="auth-perks" aria-label="Meetday account benefits">
+        <span><b>YOUR SPACE</b>A profile that is yours</span>
+        <span><b>PRIVATE</b>Your email stays hidden</span>
+        <span><b>IN CONTROL</b>Edit or leave any time</span>
+      </div>
+      <p class="form-error" id="auth-error" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+  <dialog id="chat-dialog" aria-labelledby="chat-title">
+    <section class="dialog-content chat-dialog-content">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">MUTUAL CONNECTION</p><h2 id="chat-title">Messages</h2><p>Be kind. Never share sensitive information or money.</p></div>
+        <button class="close-dialog" id="close-chat" type="button" aria-label="Close">×</button>
+      </div>
+      <ol class="chat-messages" id="chat-messages" aria-live="polite"></ol>
+      <form class="chat-compose" id="chat-form">
+        <label class="visually-hidden" for="chat-message-input">Write a message</label>
+        <textarea id="chat-message-input" maxlength="2000" required placeholder="Start with a thoughtful hello…"></textarea>
+        <button class="primary-button" type="submit">Send</button>
+      </form>
+      <p class="field-help" id="chat-status" role="status"></p>
+    </section>
+  </dialog>
+  <dialog id="report-dialog" aria-labelledby="report-title">
+    <form class="dialog-content" id="report-form">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">COMMUNITY SAFETY</p><h2 id="report-title">Report a profile</h2><p>Reports are private. Choose the closest reason and add context if helpful.</p></div>
+        <button class="close-dialog" id="close-report" type="button" aria-label="Close">×</button>
+      </div>
+      <label class="field">Reason<select name="reason" required><option value="">Choose a reason</option><option value="harassment">Harassment or abusive behavior</option><option value="fake_profile">Fake or misleading profile</option><option value="underage">Possible underage user</option><option value="unsafe_behavior">Unsafe or inappropriate behavior</option><option value="other">Something else</option></select></label>
+      <label class="field" style="margin-top:12px">Details (optional)<textarea name="details" maxlength="500" placeholder="Share only relevant details. Avoid sensitive information."></textarea></label>
+      <button class="primary-button dialog-submit" type="submit">Send private report</button>
+      <p class="form-error" id="report-error" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="./config.js"></script>
+  <script>
+    (() => {
+      try {
+        const savedKey = window.localStorage.getItem("meetday-supabase-publishable-key");
+        if (!window.MEETDAY_CONFIG.supabasePublishableKey && savedKey) {
+          window.MEETDAY_CONFIG.supabasePublishableKey = savedKey;
+        }
+      } catch {
+        document.getElementById("setup-copy").textContent = "Browser storage is unavailable. Add the public publishable key to dating/config.js, then reload. Never use a secret or service-role key.";
+      }
+      if (window.MEETDAY_CONFIG?.supabaseUrl && window.MEETDAY_CONFIG?.supabasePublishableKey) return;
+      const authDialog = document.getElementById("auth-dialog");
+      const authForm = document.getElementById("auth-form");
+      const authError = document.getElementById("auth-error");
+      const authSubmit = document.getElementById("auth-submit");
+      const authTitle = document.getElementById("auth-dialog-title");
+      const authToggle = document.getElementById("auth-mode-toggle");
+      const passwordResetButton = document.getElementById("password-reset-button");
+      const authPassword = document.getElementById("auth-password");
+      const passwordStrength = document.getElementById("password-strength");
+      const passwordStrengthCopy = document.getElementById("password-strength-copy");
+      document.getElementById("setup-title").textContent = "Connect your Meetday project";
+      document.getElementById("setup-copy").textContent = "The Supabase project URL is already saved. Add its public publishable key from Supabase → Project Settings → API Keys. Never enter a secret or service-role key here.";
+      document.getElementById("avatar-help").textContent = "Profile photo uploads are available when the live account service is connected.";
+      document.getElementById("profile-form").elements.avatar.disabled = true;
+      document.getElementById("profile-consent-copy").textContent = "I confirm I’m at least 18 and understand this sample profile is saved only in this browser.";
+      document.getElementById("profile-dialog-copy").textContent = "This is a local demo profile only. Connect Supabase to create an account that other members can discover.";
+      document.getElementById("profile-submit").textContent = "Save demo profile";
+      let authMode = "sign-in";
+      document.getElementById("live-auth-gate").hidden = false;
+      document.getElementById("live-auth-message").textContent = "Sign in or create an account to continue. Live accounts are not connected yet, so member access is unavailable.";
+      document.getElementById("live-auth-cta").textContent = "Log in";
+      document.getElementById("live-setup-note").hidden = false;
+      document.getElementById("setup-title").textContent = "Connect your Meetday project";
+      document.getElementById("setup-copy").textContent = "The Supabase project URL is already saved. Add its public publishable key from Supabase → Project Settings → API Keys. Never enter a secret or service-role key here.";
+      document.getElementById("profile-button").hidden = true;
+      document.getElementById("live-auth-cta").addEventListener("click", () => openAuth("sign-in"));
+      document.getElementById("project-key-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const key = String(new FormData(event.currentTarget).get("publishableKey") || "").trim();
+        if (!key || key.length < 20) {
+          document.getElementById("setup-copy").textContent = "That key looks incomplete. Copy the full publishable key from Supabase → Project Settings → API Keys.";
+          return;
+        }
+        try {
+          window.localStorage.setItem("meetday-supabase-publishable-key", key);
+        } catch {
+          document.getElementById("setup-copy").textContent = "Could not save this key in browser storage. Add the publishable key to dating/config.js instead. Never use a secret or service-role key.";
+          return;
+        }
+        window.MEETDAY_CONFIG.supabasePublishableKey = key;
+        window.location.reload();
+      });
+      const openAuth = (mode) => {
+        authMode = mode;
+        authTitle.textContent = mode === "sign-in" ? "Log in" : "Create your account";
+        authSubmit.textContent = mode === "sign-in" ? "Log in" : "Sign up";
+        authToggle.textContent = mode === "sign-in" ? "Create account" : "I already have an account";
+        passwordResetButton.hidden = mode !== "sign-in";
+        authPassword.minLength = mode === "sign-in" ? 1 : 10;
+        authPassword.value = "";
+        passwordStrength.dataset.mode = mode;
+        document.getElementById("password-help").textContent = mode === "sign-in"
+          ? "Use the password you chose for your Meetday account."
+          : "Use at least 10 characters with 3 of these: uppercase, lowercase, number, symbol.";
+        updatePasswordStrength();
+        authError.textContent = "";
+        document.getElementById("auth-dialog-copy").textContent = "Connect a Supabase project to create and use real accounts. Your personal profile is created after you verify your email.";
+        authDialog.showModal();
+      };
+      function updatePasswordStrength() {
+        const value = authPassword.value;
+        const types = [/[a-z]/.test(value), /[A-Z]/.test(value), /\d/.test(value), /[^A-Za-z0-9]/.test(value)].filter(Boolean).length;
+        const score = Math.min(4, Number(value.length >= 10) + Number(types >= 2) + Number(types >= 3) + Number(types === 4));
+        const labels = ["Add a password", "Weak", "Fair", "Strong", "Very strong"];
+        passwordStrength.dataset.strength = String(score);
+        passwordStrengthCopy.textContent = value
+          ? `${labels[score]}${score < 3 ? " — use 10+ characters and at least 3 character types." : ""}`
+          : "Use 10+ characters and combine letters, numbers, and symbols.";
+      }
+      authPassword.addEventListener("input", updatePasswordStrength);
+      document.getElementById("password-toggle").addEventListener("click", (event) => {
+        const reveal = authPassword.type === "password";
+        authPassword.type = reveal ? "text" : "password";
+        event.currentTarget.textContent = reveal ? "Hide" : "Show";
+        event.currentTarget.setAttribute("aria-pressed", String(reveal));
+      });
+      document.getElementById("auth-button").addEventListener("click", () => openAuth("sign-in"));
+      document.getElementById("signup-button").addEventListener("click", () => openAuth("sign-up"));
+      document.querySelectorAll("[data-open-signup]").forEach((button) => button.addEventListener("click", () => openAuth("sign-up")));
+      document.getElementById("auth-mode-toggle").addEventListener("click", () => openAuth(authMode === "sign-in" ? "sign-up" : "sign-in"));
+      document.querySelector("[data-close-auth]").addEventListener("click", () => authDialog.close());
+      authForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (authMode === "sign-up" && (authPassword.value.length < 10 || Number(passwordStrength.dataset.strength) < 3)) {
+          authError.textContent = "Choose a stronger password: at least 10 characters with 3 character types.";
+          return;
+        }
+        authError.textContent = "Live accounts are not connected yet. Add your Supabase URL and publishable key in dating/config.js, then run dating/supabase-schema.sql.";
+      });
+      passwordResetButton.addEventListener("click", () => {
+        authError.textContent = "Password reset becomes available after connecting your Supabase project.";
+      });
+      return;
+      const sampleProfiles = [
+        { id: "sample-1", name: "Amara", age: 28, city: "Nairobi", distance: 4, intent: "relationship", bio: "Slow mornings, good coffee, and finding new places to wander.", interests: ["Coffee", "Hiking", "Books"], initials: "A", style: "one" },
+        { id: "sample-2", name: "Noah", age: 31, city: "Nairobi", distance: 8, intent: "exploring", bio: "Here for honest conversation and the occasional spontaneous road trip.", interests: ["Music", "Travel", "Food"], initials: "N", style: "two" },
+        { id: "sample-3", name: "Zuri", age: 26, city: "Kiambu", distance: 14, intent: "relationship", bio: "Art galleries, trying recipes twice, and cheering for the underdog.", interests: ["Art", "Cooking", "Football"], initials: "Z", style: "three" },
+        { id: "sample-4", name: "Eli", age: 29, city: "Nairobi", distance: 6, intent: "friends", bio: "Weekend cyclist and beginner at basically every instrument.", interests: ["Cycling", "Jazz", "Nature"], initials: "E", style: "four" },
+        { id: "sample-5", name: "Nia", age: 30, city: "Thika", distance: 24, intent: "exploring", bio: "I make excellent playlists and enthusiastic, average pancakes.", interests: ["Podcasts", "Design", "Brunch"], initials: "N", style: "five" },
+        { id: "sample-6", name: "Theo", age: 27, city: "Nairobi", distance: 11, intent: "relationship", bio: "A good book, a long walk, and being kind on purpose.", interests: ["Reading", "Running", "Coffee"], initials: "T", style: "six" },
+        { id: "sample-7", name: "Imani", age: 32, city: "Ruiru", distance: 19, intent: "friends", bio: "Plant parent, Sunday cook, always up for a board game.", interests: ["Plants", "Cooking", "Games"], initials: "I", style: "seven" },
+        { id: "sample-8", name: "Kai", age: 29, city: "Nairobi", distance: 3, intent: "exploring", bio: "Sunsets, street food, and asking one more question.", interests: ["Food", "Photography", "Travel"], initials: "K", style: "eight" }
+      ];
+      const storageKeys = { likes: "meetday-demo-likes", profile: "meetday-demo-profile" };
+      storageKeys.plans = "meetday-demo-plans";
+      const profilesElement = document.getElementById("profiles");
+      const connectionsElement = document.getElementById("connections-list");
+      const resultsCount = document.getElementById("results-count");
+      const connectionCount = document.getElementById("connection-count");
+      const searchInput = document.getElementById("profile-search");
+      const distanceFilter = document.getElementById("distance-filter");
+      const intentFilter = document.getElementById("intent-filter");
+      const profileDialog = document.getElementById("profile-dialog");
+      const profileForm = document.getElementById("profile-form");
+      const profileError = document.getElementById("profile-error");
+      const dateDialog = document.getElementById("date-dialog");
+      const dateForm = document.getElementById("date-form");
+      const datePerson = document.getElementById("date-person");
+      const dateError = document.getElementById("date-error");
+      const toast = document.getElementById("toast");
+      let likes = [];
+      let savedProfile = null;
+      let plans = [];
+      let selectedDatePerson = "";
+      let toastTimer;
+      try {
+        const storedLikes = JSON.parse(localStorage.getItem(storageKeys.likes) || "[]");
+        likes = Array.isArray(storedLikes) ? storedLikes.filter((id) => sampleProfiles.some((profile) => profile.id === id)) : [];
+        const storedProfile = JSON.parse(localStorage.getItem(storageKeys.profile) || "null");
+        if (storedProfile && typeof storedProfile.name === "string" && Number(storedProfile.age) >= 18) {
+          const defaultUsername = storedProfile.name.toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 20);
+          savedProfile = { ...storedProfile, username: storedProfile.username || (defaultUsername.length >= 3 ? defaultUsername : "member") };
+        }
+        const storedPlans = JSON.parse(localStorage.getItem(storageKeys.plans) || "[]");
+        plans = Array.isArray(storedPlans) ? storedPlans.filter((plan) =>
+          plan && typeof plan.id === "string" && sampleProfiles.some((profile) => profile.id === plan.personId)
+          && typeof plan.date === "string" && typeof plan.time === "string"
+          && typeof plan.place === "string" && typeof plan.activity === "string"
+        ) : [];
+      } catch {
+        showToast("Browser storage isn’t available. You can still explore this demo during this visit.");
+      }
+      renderLocalProfile();
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.hidden = false;
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => { toast.hidden = true; }, 4200);
+      }
+
+      function renderLocalProfile() {
+        const accountPanel = document.getElementById("my-account");
+        const accountLink = document.getElementById("my-account-link");
+        const profileButton = document.getElementById("profile-button");
+        if (!savedProfile) {
+          accountPanel.hidden = true;
+          accountLink.hidden = true;
+          profileButton.textContent = "Set up profile";
+          return;
+        }
+        accountPanel.hidden = false;
+        accountLink.hidden = false;
+        profileButton.textContent = "Edit demo profile";
+        document.getElementById("account-avatar").textContent = savedProfile.name.slice(0, 1).toUpperCase();
+        document.getElementById("account-name").textContent = savedProfile.name;
+        document.getElementById("account-username").textContent = `@${savedProfile.username}`;
+        document.getElementById("account-email").textContent = "Local demo profile · account email not connected";
+        document.getElementById("account-bio").textContent = savedProfile.bio;
+        document.getElementById("account-facts").replaceChildren(
+          Object.assign(document.createElement("span"), { textContent: `${savedProfile.age} years old` }),
+          Object.assign(document.createElement("span"), { textContent: savedProfile.city }),
+          Object.assign(document.createElement("span"), { textContent: ({ relationship: "Long-term", friends: "New friends", exploring: "Open to seeing" })[savedProfile.intent] })
+        );
+        const interests = document.getElementById("account-interests");
+        interests.replaceChildren();
+        (savedProfile.interests || []).forEach((interest) => {
+          const tag = document.createElement("span");
+          tag.className = "tag";
+          tag.textContent = interest;
+          interests.append(tag);
+        });
+      }
+
+      function renderConnections() {
+        connectionsElement.replaceChildren();
+        connectionCount.textContent = String(likes.length);
+        if (!likes.length) {
+          const empty = document.createElement("p");
+          empty.className = "panel-copy";
+          empty.textContent = "No connections yet. Explore the sample profiles above.";
+          connectionsElement.append(empty);
+        } else likes.map((id) => sampleProfiles.find((profile) => profile.id === id)).filter(Boolean).forEach((profile) => {
+          const row = document.createElement("div");
+          row.className = "match-row";
+          const person = document.createElement("div");
+          person.className = "match-person";
+          const avatar = document.createElement("span");
+          avatar.className = "mini-avatar";
+          avatar.textContent = profile.initials;
+          const details = document.createElement("span");
+          const name = document.createElement("strong");
+          name.textContent = profile.name;
+          const caption = document.createElement("small");
+          caption.textContent = "Sample profile · your interest is saved";
+          details.append(name, caption);
+          person.append(avatar, details);
+          const actions = document.createElement("div");
+          actions.className = "match-row-actions";
+          const planButton = document.createElement("button");
+          planButton.className = "soft-button";
+          planButton.type = "button";
+          planButton.textContent = "Plan a date";
+          planButton.addEventListener("click", () => openDatePlanner(profile));
+          const removeButton = document.createElement("button");
+          removeButton.className = "soft-button";
+          removeButton.type = "button";
+          removeButton.textContent = "Remove";
+          removeButton.setAttribute("aria-label", `Remove ${profile.name} from your demo interests`);
+          removeButton.addEventListener("click", () => toggleLike(profile));
+          actions.append(planButton, removeButton);
+          row.append(person, actions);
+          connectionsElement.append(row);
+        });
+        if (plans.length) {
+          const heading = document.createElement("h3");
+          heading.textContent = "Your date plans";
+          heading.style.cssText = "margin:16px 0 0;font-size:12px";
+          const planList = document.createElement("div");
+          planList.className = "date-plan-list";
+          plans.slice().sort((a, b) => `${a.date}T${a.time}`.localeCompare(`${b.date}T${b.time}`)).forEach((plan) => {
+            const profile = sampleProfiles.find((item) => item.id === plan.personId);
+            if (!profile) return;
+            const item = document.createElement("article");
+            item.className = "date-plan";
+            const name = document.createElement("strong");
+            name.textContent = `${profile.name} · ${plan.activity}`;
+            const when = document.createElement("span");
+            const date = new Date(`${plan.date}T${plan.time}`);
+            when.textContent = Number.isNaN(date.getTime()) ? `${plan.date} · ${plan.time}` : new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(date);
+            const place = document.createElement("span");
+            place.textContent = `Public meet · ${plan.place}`;
+            const actions = document.createElement("div");
+            actions.className = "date-plan-actions";
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.textContent = "Remove plan";
+            remove.addEventListener("click", () => removePlan(plan.id));
+            actions.append(remove);
+            item.append(name, when, place, actions);
+            planList.append(item);
+          });
+          connectionsElement.append(heading, planList);
+        }
+      }
+
+      function openDatePlanner(profile) {
+        if (!likes.includes(profile.id)) {
+          showToast("Show interest first. This prototype does not send invitations or messages.");
+          return;
+        }
+        selectedDatePerson = profile.id;
+        datePerson.replaceChildren(new Option(profile.name, profile.id));
+        dateError.textContent = "";
+        const now = new Date();
+        const earliest = new Date(now.getTime() + 60 * 60 * 1000);
+        dateForm.elements.date.min = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+        dateForm.elements.date.value = dateForm.elements.date.min;
+        dateForm.elements.time.value = `${String(earliest.getHours()).padStart(2, "0")}:00`;
+        dateDialog.showModal();
+      }
+
+      function removePlan(id) {
+        plans = plans.filter((plan) => plan.id !== id);
+        try {
+          localStorage.setItem(storageKeys.plans, JSON.stringify(plans));
+          renderConnections();
+          showToast("Date plan removed from this device.");
+        } catch {
+          showToast("Could not update your saved date plans in browser storage.");
+        }
+      }
+
+      function renderProfiles() {
+        const query = searchInput.value.trim().toLowerCase();
+        const maxDistance = distanceFilter.value === "any" ? Infinity : Number(distanceFilter.value);
+        const intention = intentFilter.value;
+        const filtered = sampleProfiles.filter((profile) =>
+          profile.distance <= maxDistance
+          && (intention === "any" || profile.intent === intention)
+          && `${profile.name} ${profile.city} ${profile.bio} ${profile.interests.join(" ")}`.toLowerCase().includes(query)
+        );
+        profilesElement.replaceChildren();
+        resultsCount.textContent = `${filtered.length} fictional ${filtered.length === 1 ? "profile" : "profiles"}`;
+        if (!filtered.length) {
+          const empty = document.createElement("p");
+          empty.className = "empty";
+          empty.textContent = "No sample profiles match those filters. Try widening your search.";
+          profilesElement.append(empty);
+          return;
+        }
+        filtered.forEach((profile) => {
+          const card = document.createElement("article");
+          card.className = "profile-card";
+          const portrait = document.createElement("div");
+          portrait.className = `portrait portrait-${profile.style}`;
+          portrait.setAttribute("aria-hidden", "true");
+          const avatar = document.createElement("span");
+          avatar.className = "avatar-art";
+          avatar.textContent = profile.initials;
+          const badge = document.createElement("span");
+          badge.className = "sample-tag";
+          badge.textContent = "FICTIONAL DEMO";
+          portrait.append(avatar, badge);
+          const content = document.createElement("div");
+          content.className = "profile-content";
+          const title = document.createElement("div");
+          title.className = "profile-title";
+          const name = document.createElement("h3");
+          name.textContent = profile.name;
+          const age = document.createElement("span");
+          age.textContent = String(profile.age);
+          title.append(name, age);
+          const location = document.createElement("p");
+          location.className = "profile-location";
+          location.textContent = `${profile.city} · ${profile.distance} miles away`;
+          const bio = document.createElement("p");
+          bio.className = "profile-bio";
+          bio.textContent = profile.bio;
+          const tags = document.createElement("div");
+          tags.className = "tags";
+          profile.interests.forEach((interest) => {
+            const tag = document.createElement("span");
+            tag.className = "tag";
+            tag.textContent = interest;
+            tags.append(tag);
+          });
+          const actions = document.createElement("div");
+          actions.className = "profile-actions";
+          const pass = document.createElement("button");
+          pass.className = "pass-button";
+          pass.type = "button";
+          pass.textContent = "Pass";
+          pass.addEventListener("click", () => {
+            card.remove();
+            showToast("Passed on this fictional demo profile.");
+            if (!profilesElement.children.length) renderProfiles();
+          });
+          const like = document.createElement("button");
+          like.className = "like-button";
+          like.type = "button";
+          like.setAttribute("aria-pressed", String(likes.includes(profile.id)));
+          like.textContent = likes.includes(profile.id) ? "♥ Interested" : "♡ Interested";
+          like.addEventListener("click", () => toggleLike(profile));
+          actions.append(pass, like);
+          content.append(title, location, bio, tags, actions);
+          card.append(portrait, content);
+          profilesElement.append(card);
+        });
+      }
+
+      function toggleLike(profile) {
+        if (likes.includes(profile.id)) {
+          likes = likes.filter((id) => id !== profile.id);
+          showToast(`Removed ${profile.name} from your demo interests.`);
+        } else {
+          likes.push(profile.id);
+          showToast(`Interest in ${profile.name} saved on this device. This is not sent to anyone.`);
+        }
+        try {
+          localStorage.setItem(storageKeys.likes, JSON.stringify(likes));
+        } catch {
+          showToast("Interest changed for this visit, but browser storage is unavailable.");
+        }
+        renderProfiles();
+        renderConnections();
+      }
+
+      document.querySelectorAll("[data-open-profile]").forEach((button) => {
+        button.addEventListener("click", () => {
+          if (savedProfile) {
+            profileForm.elements.name.value = savedProfile.name || "";
+            profileForm.elements.username.value = savedProfile.username || "";
+            profileForm.elements.age.value = savedProfile.age || "";
+            profileForm.elements.city.value = savedProfile.city || "";
+            profileForm.elements.intent.value = savedProfile.intent || "";
+            profileForm.elements.interests.value = (savedProfile.interests || []).join(", ");
+            profileForm.elements.bio.value = savedProfile.bio || "";
+            profileForm.elements.adult.checked = true;
+          } else {
+            profileForm.reset();
+          }
+          profileError.textContent = "";
+          profileDialog.showModal();
+        });
+      });
+      document.querySelector("[data-close-profile]").addEventListener("click", () => profileDialog.close());
+      profileDialog.addEventListener("click", (event) => {
+        if (event.target === profileDialog) profileDialog.close();
+      });
+      profileForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(profileForm);
+        const age = Number(formData.get("age"));
+        if (!Number.isInteger(age) || age < 18 || age > 120 || !formData.get("adult")) {
+          profileError.textContent = "This demo is only for adults aged 18 or older.";
+          return;
+        }
+        const username = String(formData.get("username") || "").trim().toLowerCase();
+        if (!/^[a-z0-9_]{3,24}$/.test(username)) {
+          profileError.textContent = "Use a username with 3–24 letters, numbers, or underscores.";
+          return;
+        }
+        savedProfile = {
+          name: String(formData.get("name")).trim(),
+          username,
+          age,
+          city: String(formData.get("city")).trim(),
+          intent: String(formData.get("intent")),
+          interests: [...new Set(String(formData.get("interests") || "").split(",").map((value) => value.trim()).filter(Boolean))].slice(0, 8),
+          bio: String(formData.get("bio")).trim()
+        };
+        try {
+          localStorage.setItem(storageKeys.profile, JSON.stringify(savedProfile));
+        } catch {
+          profileError.textContent = "Could not save this demo profile in your browser.";
+          return;
+        }
+        profileDialog.close();
+        renderLocalProfile();
+        showToast(`Your demo profile is saved on this device, ${savedProfile.name}. It is not published.`);
+      });
+      document.querySelector("[data-close-date]").addEventListener("click", () => dateDialog.close());
+      dateDialog.addEventListener("click", (event) => {
+        if (event.target === dateDialog) dateDialog.close();
+      });
+      dateForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!likes.includes(selectedDatePerson)) {
+          dateError.textContent = "Show interest in a profile before saving a plan.";
+          return;
+        }
+        const formData = new FormData(dateForm);
+        const date = String(formData.get("date"));
+        const time = String(formData.get("time"));
+        const scheduled = new Date(`${date}T${time}`);
+        if (!Number.isFinite(scheduled.getTime()) || scheduled < new Date()) {
+          dateError.textContent = "Choose a future date and time.";
+          return;
+        }
+        if (!formData.get("safety")) {
+          dateError.textContent = "Confirm the public-place and trusted-contact safety steps.";
+          return;
+        }
+        const plan = {
+          id: globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+          personId: selectedDatePerson,
+          date,
+          time,
+          place: String(formData.get("place")).trim(),
+          activity: String(formData.get("activity")).trim()
+        };
+        try {
+          plans.push(plan);
+          localStorage.setItem(storageKeys.plans, JSON.stringify(plans));
+        } catch {
+          plans = plans.filter((item) => item.id !== plan.id);
+          dateError.textContent = "Could not save your plan in this browser.";
+          return;
+        }
+        dateDialog.close();
+        renderConnections();
+        showToast("Date plan saved on this device. Remember to share your plans with someone you trust.");
+      });
+      [searchInput, distanceFilter, intentFilter].forEach((control) => {
+        control.addEventListener(control === searchInput ? "input" : "change", renderProfiles);
+      });
+      renderProfiles();
+      renderConnections();
+    })();
+  </script>
+  <script type="module" src="./live.js"></script>
+</body>
+</html>
