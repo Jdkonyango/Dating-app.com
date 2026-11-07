@@ -630,7 +630,7 @@
           authError.textContent = "Choose a stronger password: at least 10 characters with 3 character types.";
           return;
         }
-        authError.textContent = "Live accounts are not connected yet. Add your Supabase URL and publishable key in dating/config.js, then run dating/supabase-schema.sql.";
+        authError.textContent = "Live accounts are not connected yet. Add your Supabase URL and publishable key in dating/config.js, then apply dating/supabase/migrations/20261106213900_meetday_initial.sql.";
       });
       passwordResetButton.addEventListener("click", () => {
         authError.textContent = "Password reset becomes available after connecting your Supabase project.";

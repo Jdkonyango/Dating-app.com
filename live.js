@@ -105,10 +105,53 @@ if (window.MEETDAY_CONFIG?.supabaseUrl && window.MEETDAY_CONFIG?.supabasePublish
     element.textContent = error?.message || String(error);
   }
 
+  function isSchemaSetupError(error) {
+    const message = error?.message || String(error);
+    return /function public\.(get_my_profile|save_my_profile|discover_profiles|get_my_matches)|schema cache|PGRST202|42P01/i.test(message);
+  }
+
+  function normalizeMyProfile(data) {
+    const invalidResult = () => {
+      throw new Error(
+        "Supabase get_my_profile returned an incompatible profile shape. Apply dating/supabase/migrations/20261106213900_meetday_initial.sql, verify get_my_profile() returns jsonb, and reload."
+      );
+    };
+    if (data === null) return null;
+    if (Array.isArray(data)) {
+      if (data.length !== 1 || !data[0] || typeof data[0] !== "object" || Array.isArray(data[0])) {
+        return invalidResult();
+      }
+      data = data[0];
+    }
+    if (typeof data !== "object") return invalidResult();
+    const profile = typeof data.user_id === "string"
+      ? data
+      : typeof data.id === "string"
+        ? { ...data, user_id: data.id }
+        : null;
+    if (
+      !profile
+      || typeof profile.username !== "string"
+      || typeof profile.first_name !== "string"
+      || typeof profile.age !== "number"
+      || typeof profile.city !== "string"
+      || !["relationship", "friends", "exploring"].includes(profile.intent)
+      || typeof profile.bio !== "string"
+      || !Array.isArray(profile.interests)
+      || typeof profile.adult_confirmed !== "boolean"
+    ) {
+      return invalidResult();
+    }
+    return profile;
+  }
+
   function authErrorMessage(error) {
     const message = error?.message || String(error);
-    if (/function public\.(get_my_profile|discover_profiles|get_my_matches)|schema cache|PGRST202|42P01/i.test(message)) {
-      return `The Meetday database is not set up yet. Open Supabase → SQL Editor and run dating/supabase-schema.sql. Details: ${message}`;
+    if (/email.*rate.?limit|rate.?limit.*email|over_email_send_rate_limit/i.test(message)) {
+      return "Supabase temporarily limited verification emails. Wait before trying again, or configure a custom SMTP provider in Supabase → Authentication → SMTP Settings and adjust Authentication → Rate Limits. The provider may also enforce its own sending limits.";
+    }
+    if (isSchemaSetupError(error)) {
+      return `The Meetday database is not set up yet. Apply dating/supabase/migrations/20261106213900_meetday_initial.sql in the Supabase SQL Editor. Details: ${message}`;
     }
     if (/invalid api key|no api key|apikey/i.test(message)) {
       return "Supabase rejected the project key. Check that you copied the public publishable/anon key for this project into dating/config.js or the setup box.";
@@ -316,7 +359,7 @@ if (window.MEETDAY_CONFIG?.supabaseUrl && window.MEETDAY_CONFIG?.supabasePublish
         if (data) showToast("It’s a mutual match! You can say hello now.");
         await refreshMemberData();
       } catch (error) {
-        setError(ui.profileError, error);
+        ui.profileError.textContent = authErrorMessage(error);
         showToast(error.message || "Could not like this profile.");
       } finally {
         like.disabled = false;
@@ -496,6 +539,7 @@ if (window.MEETDAY_CONFIG?.supabaseUrl && window.MEETDAY_CONFIG?.supabasePublish
     if (nextSessionKey === lastSessionKey) return;
     lastSessionKey = nextSessionKey;
     session = nextSession;
+    ui.liveAuthCta.hidden = false;
     ownProfile = null;
     matches = [];
     if (matchChannel) {
@@ -517,12 +561,24 @@ if (window.MEETDAY_CONFIG?.supabaseUrl && window.MEETDAY_CONFIG?.supabasePublish
       return;
     }
 
-    const { data: profile, error } = await supabase.rpc("get_my_profile");
+    const { data: profileData, error } = await supabase.rpc("get_my_profile");
     if (error) {
       setLiveView(false);
       ui.liveAuthMessage.textContent = authErrorMessage(error);
       ui.liveAuthCta.textContent = "Retry";
+      ui.liveAuthCta.hidden = isSchemaSetupError(error);
       showToast(authErrorMessage(error));
+      return;
+    }
+    let profile;
+    try {
+      profile = normalizeMyProfile(profileData);
+    } catch (profileError) {
+      const message = profileError.message;
+      setLiveView(false);
+      ui.liveAuthMessage.textContent = message;
+      ui.liveAuthCta.hidden = true;
+      showToast(message);
       return;
     }
     ownProfile = profile ? (await attachAvatarUrls([profile]))[0] : null;
@@ -541,7 +597,13 @@ if (window.MEETDAY_CONFIG?.supabaseUrl && window.MEETDAY_CONFIG?.supabasePublish
     try {
       await refreshMemberData();
     } catch (loadError) {
-      showToast(authErrorMessage(loadError));
+      const message = authErrorMessage(loadError);
+      if (isSchemaSetupError(loadError)) {
+        setLiveView(false);
+        ui.liveAuthMessage.textContent = message;
+        ui.liveAuthCta.hidden = true;
+      }
+      showToast(message);
     }
   }
 
