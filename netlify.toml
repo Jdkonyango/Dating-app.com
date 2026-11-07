@@ -1,0 +1,10 @@
+# Static site: no build step needed, serve files from the repo root.
+[build]
+  command = ""
+  publish = "."
+
+# The app's main page is date.html; serve it at the site root.
+[[redirects]]
+  from = "/"
+  to = "/date.html"
+  status = 200
